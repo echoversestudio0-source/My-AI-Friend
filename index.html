@@ -1,812 +1,199 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090914">
-<title>My AI Friend</title>
-
+<title>ABHI AI</title>
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --bg: #090914;
-  --panel: #111120;
-  --surface: #1b1b30;
-  --purple: #8658ff;
-  --text: #f7f5ff;
-  --muted: #9996b1;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-  min-height: 100dvh;
-  display: flex;
-  justify-content: center;
-}
-
-.app {
-  width: 100%;
-  max-width: 760px;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background:
-    radial-gradient(ellipse at top, #21143c 0%, transparent 45%),
-    var(--bg);
-}
-
-/* HEADER */
-
-header {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  gap: 12px;
-  border-bottom: 1px solid #ffffff12;
-  background: #0d0c19eF;
-}
-
-.logo {
-  height: 45px;
-  width: 45px;
-  border-radius: 15px;
-  background: linear-gradient(135deg,#a16aff,#5235d9);
-  display: grid;
-  place-items: center;
-  font-size: 25px;
-  box-shadow: 0 0 25px #8658ff55;
-}
-
-.brand h2 {
-  font-size: 17px;
-  letter-spacing: .3px;
-}
-
-.brand p {
-  color: #79e6ad;
-  font-size: 11px;
-  margin-top: 5px;
-}
-
-.header-buttons {
-  margin-left: auto;
-  display: flex;
-  gap: 7px;
-}
-
-.header-btn {
-  background: var(--surface);
-  border: 1px solid #ffffff12;
-  padding: 9px 11px;
-  border-radius: 10px;
-  color: white;
-  font-size: 12px;
-}
-
-/* CHAT */
-
-#chat {
-  flex: 1;
-  overflow-y: auto;
-  padding: 18px 14px;
-  scroll-behavior: smooth;
-}
-
-.welcome {
-  min-height: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 25px 10px;
-}
-
-.orb {
-  width: 105px;
-  height: 105px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 46px;
-  background: radial-gradient(circle at 35% 30%,
-    #c6a5ff,#7944e8 55%,#211044);
-  box-shadow: 0 0 35px #8658ff80,
-              inset 0 0 20px #ffffff50;
-  animation: floating 3s ease-in-out infinite;
-}
-
-@keyframes floating {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-.welcome h1 {
-  margin-top: 28px;
-  font-size: 25px;
-  background: linear-gradient(90deg,#fff,#c6a6ff);
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-.welcome p {
-  max-width: 340px;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.8;
-  margin-top: 12px;
-}
-
-.suggestions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 25px;
-}
-
-.suggestions button {
-  background: #211a39;
-  border: 1px solid #7048b866;
-  color: #d9c9ff;
-  padding: 10px 13px;
-  border-radius: 20px;
-  font-size: 12px;
-}
-
-/* MESSAGES */
-
-.message {
-  width: fit-content;
-  max-width: 88%;
-  padding: 13px 15px;
-  margin: 15px 0;
-  border-radius: 17px;
-  line-height: 1.7;
-  font-size: 14px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  animation: appear .25s ease;
-}
-
-@keyframes appear {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.user {
-  margin-left: auto;
-  background: linear-gradient(135deg,#754be0,#5432ae);
-  border-bottom-right-radius: 4px;
-}
-
-.ai {
-  margin-right: auto;
-  background: #1c1b30;
-  border: 1px solid #ffffff12;
-  border-bottom-left-radius: 4px;
-}
-
-.ai-label {
-  display: block;
-  color: #c19aff;
-  font-size: 11px;
-  margin-bottom: 6px;
-}
-
-.message-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.message-actions button {
-  color: #bca6ff;
-  background: #ffffff0b;
-  border: 1px solid #ffffff15;
-  padding: 5px 10px;
-  border-radius: 8px;
-  font-size: 11px;
-}
-
-.sources {
-  margin-top: 12px;
-  padding-top: 8px;
-  border-top: 1px solid #ffffff18;
-}
-
-.sources a {
-  display: block;
-  color: #8dcaff;
-  font-size: 12px;
-  margin-top: 7px;
-  overflow-wrap: anywhere;
-}
-
-.typing {
-  padding: 12px;
-  color: #b99bff;
-  font-size: 13px;
-}
-
-/* INPUT */
-
-.bottom {
-  padding: 12px;
-  background: #11101f;
-  border-top: 1px solid #ffffff15;
-}
-
-.tools {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.toggle {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.toggle input {
-  accent-color: var(--purple);
-}
-
-.input-box {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: #201f34;
-  border: 1px solid #ffffff20;
-  border-radius: 18px;
-  padding: 7px;
-}
-
-#message {
-  min-width: 0;
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: white;
-  font-size: 14px;
-  padding: 12px 7px;
-}
-
-#message::placeholder {
-  color: #89869f;
-}
-
-.action {
-  height: 43px;
-  width: 43px;
-  flex-shrink: 0;
-  border-radius: 13px;
-  background: #35314c;
-  color: white;
-  font-size: 18px;
-  border: none;
-  cursor: pointer;
-}
-
-.action.send {
-  background: linear-gradient(135deg,#a16aff,#6237d9);
-}
-
-.action:disabled {
-  opacity: .5;
-}
-
-.status {
-  color: var(--muted);
-  text-align: center;
-  font-size: 10px;
-  margin-top: 10px;
-}
-
-@media(min-width:600px) {
-  #chat { padding: 24px; }
-  .bottom { padding: 16px 22px; }
-}
+:root{--bg:#090914;--panel:#111120;--surface:#1d1b32;--purple:#8658ff;--text:#f7f5ff;--muted:#aaa5c2;--line:#ffffff18}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100dvh}
+button,input,textarea{font:inherit}
+button{cursor:pointer;color:inherit}
+.app{max-width:780px;height:100dvh;margin:auto;display:flex;flex-direction:column;background:radial-gradient(ellipse at top,#21143c 0%,transparent 45%),var(--bg);position:relative;overflow:hidden}
+header{height:76px;flex-shrink:0;display:flex;align-items:center;padding:12px 15px;gap:12px;border-bottom:1px solid var(--line);background:#0d0c19ef;z-index:2}
+.logo{height:46px;width:46px;border-radius:15px;background:linear-gradient(135deg,#a16aff,#5235d9);display:grid;place-items:center;font-size:27px;font-weight:800;box-shadow:0 0 25px #8658ff55}
+.brand h2{font-size:18px}.brand p{color:#79e6ad;font-size:11px;margin-top:5px}
+.header-buttons{margin-left:auto;display:flex;gap:8px}
+.header-btn,.menu-btn{background:var(--surface);border:1px solid var(--line);padding:10px 12px;border-radius:11px}
+.menu-btn{font-size:22px;line-height:20px;width:42px;height:42px}
+#chat{flex:1;overflow-y:auto;padding:18px 14px;scroll-behavior:smooth}
+.welcome{min-height:75%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:25px 10px}
+.orb{width:105px;height:105px;border-radius:50%;display:grid;place-items:center;font-size:48px;font-weight:800;background:radial-gradient(circle at 35% 30%,#c6a5ff,#7944e8 55%,#211044);box-shadow:0 0 35px #8658ff80,inset 0 0 20px #ffffff50;animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+.welcome h1{margin-top:26px;font-size:26px;background:linear-gradient(90deg,#fff,#c6a6ff);-webkit-background-clip:text;color:transparent}
+.welcome p{max-width:350px;color:var(--muted);font-size:14px;line-height:1.8;margin-top:12px}
+.suggestions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:22px}
+.suggestions button{background:#211a39;border:1px solid #7048b866;color:#d9c9ff;padding:10px 13px;border-radius:20px;font-size:12px}
+.message{width:fit-content;max-width:90%;padding:13px 15px;margin:14px 0;border-radius:17px;line-height:1.7;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.user{margin-left:auto;background:linear-gradient(135deg,#754be0,#5432ae);border-bottom-right-radius:4px}
+.ai{margin-right:auto;background:#1c1b30;border:1px solid var(--line);border-bottom-left-radius:4px}
+.ai-label{display:block;color:#c19aff;font-size:11px;margin-bottom:7px}
+.message-actions{display:flex;gap:8px;margin-top:10px}
+.message-actions button{color:#bca6ff;background:#ffffff0b;border:1px solid var(--line);padding:6px 10px;border-radius:8px;font-size:11px}
+.typing{padding:12px;color:#b99bff;font-size:13px}
+.bottom{flex-shrink:0;padding:11px 12px;background:#11101f;border-top:1px solid var(--line)}
+.tools{display:flex;justify-content:space-between;gap:8px;margin-bottom:10px}
+.toggle{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.toggle input{accent-color:var(--purple)}
+.input-box{display:flex;align-items:center;gap:7px;background:#201f34;border:1px solid #ffffff20;border-radius:18px;padding:7px}
+#message{min-width:0;flex:1;background:transparent;border:0;outline:0;color:white;font-size:14px;padding:12px 7px}
+#message::placeholder{color:#89869f}
+.action{height:43px;width:43px;flex-shrink:0;border-radius:13px;background:#35314c;color:white;font-size:18px;border:0}
+.action.send{background:linear-gradient(135deg,#a16aff,#6237d9)}
+.action:disabled{opacity:.5}
+.status{color:var(--muted);text-align:center;font-size:10px;margin-top:9px}
+.scrim{position:absolute;inset:0;background:#0009;z-index:5;display:none}
+.scrim.open{display:block}
+.drawer{position:absolute;z-index:6;top:0;bottom:0;left:0;width:min(84%,330px);background:#11101f;border-right:1px solid var(--line);transform:translateX(-105%);transition:.22s;padding:18px;overflow:auto}
+.drawer.open{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.drawer-title{font-size:18px;font-weight:700}
+.menu-group{border-top:1px solid var(--line);padding:14px 0}
+.menu-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px;border:0;border-radius:10px;background:transparent;color:#eee9ff;font-size:14px}
+.menu-item:active,.menu-item:hover{background:#ffffff10}
+.menu-item span:first-child{width:22px;text-align:center;color:#c19aff}
+.drawer small{color:var(--muted)}
+.panel{position:absolute;z-index:7;inset:0;background:#0d0c19;display:none;flex-direction:column;padding:18px;overflow:auto}
+.panel.open{display:flex}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.panel h3{font-size:19px}
+.panel textarea,.panel input{width:100%;background:#201f34;border:1px solid var(--line);color:white;border-radius:10px;padding:11px;margin:7px 0}
+.panel textarea{min-height:90px;resize:vertical}
+.panel-btn{background:#7048d8;border:0;border-radius:10px;padding:11px 14px;margin:6px 5px 6px 0}
+.panel-btn.secondary{background:#29263e;border:1px solid var(--line)}
+.list-card{background:#1b1a2d;border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0;font-size:13px;line-height:1.6}
+.list-card button{float:right;background:#352b51;border:0;border-radius:7px;padding:5px 8px}
+.mode-pill{font-size:10px;border:1px solid var(--line);padding:5px 8px;border-radius:20px;color:#c8b5ff}
+@media(min-width:600px){#chat{padding:24px}.bottom{padding:15px 22px}}
 </style>
 </head>
-
 <body>
-
 <div class="app">
-
 <header>
-  <div class="logo">✦</div>
-
-  <div class="brand">
-    <h2>My AI Friend</h2>
-    <p>● Your personal AI companion</p>
-  </div>
-
+  <button class="menu-btn" aria-label="Open menu" onclick="openMenu()">☰</button>
+  <div class="logo">A</div>
+  <div class="brand"><h2>ABHI AI</h2><p>● Your personal AI friend</p></div>
   <div class="header-buttons">
-    <button class="header-btn" onclick="stopVoice()">◼</button>
-    <button class="header-btn" onclick="clearChat()">New</button>
+    <span class="mode-pill" id="modePill">ONLINE</span>
+    <button class="header-btn" onclick="newChat()">New</button>
   </div>
 </header>
 
 <main id="chat">
-
   <section class="welcome" id="welcome">
-
-    <div class="orb">✦</div>
-
-    <h1>Hey! I'm your AI Friend</h1>
-
-    <p>
-      তোমার সঙ্গে কথা বলার জন্য আমি এখানে আছি।
-      মনের কথা বলো, প্রশ্ন করো অথবা গল্প করো।
-      চলো, আজ থেকেই আমাদের কথোপকথন শুরু হোক।
-    </p>
-
+    <div class="orb">A</div>
+    <h1>Hey! I'm ABHI AI</h1>
+    <p>তোমার কথা শুনতে, বুঝতে এবং সাহায্য করতে আমি এখানে আছি। বাংলা, English অথবা Banglish-এ কথা বলো।</p>
     <div class="suggestions">
-      <button onclick="suggest('হ্যালো! কেমন আছো?')">
-        হ্যালো!
-      </button>
-
-      <button onclick="suggest('আজ আমার মন ভালো নেই।')">
-        মন খারাপ
-      </button>
-
-      <button onclick="suggest('আমাকে একটা সুন্দর গল্প বলো।')">
-        একটা গল্প বলো
-      </button>
+      <button onclick="suggest('হ্যালো ABHI AI! কেমন আছো?')">হ্যালো!</button>
+      <button onclick="suggest('আজ আমার মন ভালো নেই।')">মন খারাপ</button>
+      <button onclick="suggest('আমাকে একটা সুন্দর গল্প বলো।')">একটা গল্প বলো</button>
     </div>
-
   </section>
-
 </main>
 
 <footer class="bottom">
-
   <div class="tools">
-
-    <label class="toggle">
-      <input type="checkbox" id="search">
-      Google Search
-    </label>
-
-    <label class="toggle">
-      <input type="checkbox" id="autoVoice">
-      Auto Voice Reply
-    </label>
-
+    <label class="toggle"><input type="checkbox" id="search"> Google Search</label>
+    <label class="toggle"><input type="checkbox" id="autoVoice"> Auto Voice Reply</label>
   </div>
-
   <div class="input-box">
-
-    <button class="action" id="mic"
-      onclick="startVoice()">🎙</button>
-
-    <input
-      id="message"
-      type="text"
-      placeholder="আমার সঙ্গে কথা বলো..."
-      autocomplete="off"
-    >
-
-    <button class="action send" id="send"
-      onclick="sendMessage()">➤</button>
-
+    <button class="action" id="mic" onclick="startVoice()">🎙</button>
+    <input id="message" type="text" placeholder="ABHI AI-এর সঙ্গে কথা বলো..." autocomplete="off">
+    <button class="action send" id="send" onclick="sendMessage()">➤</button>
   </div>
-
-  <div class="status" id="status">
-    Powered by Gemini AI
-  </div>
-
+  <div class="status" id="status">● Ready</div>
 </footer>
 
+<div class="scrim" id="scrim" onclick="closeMenu()"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head"><div><div class="drawer-title">ABHI AI Menu</div><small>Personal AI Control Center</small></div><button class="header-btn" onclick="closeMenu()">✕</button></div>
+  <div class="menu-group">
+    <button class="menu-item" onclick="newChat();closeMenu()"><span>＋</span>New Chat</button>
+    <button class="menu-item" onclick="showPanel('historyPanel');closeMenu()"><span>◷</span>Chat History</button>
+    <button class="menu-item" onclick="showPanel('memoryPanel');closeMenu()"><span>✧</span>Saved Memories</button>
+  </div>
+  <div class="menu-group">
+    <button class="menu-item" onclick="showPanel('offlinePanel');closeMenu()"><span>◉</span>Offline Mode</button>
+    <button class="menu-item" onclick="showPanel('settingsPanel');closeMenu()"><span>⚙</span>Settings</button>
+    <button class="menu-item" onclick="exportData();closeMenu()"><span>⇩</span>Export My Data</button>
+  </div>
+  <div class="menu-group">
+    <button class="menu-item" onclick="clearAllData();closeMenu()"><span>⌫</span>Delete All Data</button>
+  </div>
+  <small>Memories are stored on this device unless you export them.</small>
+</aside>
+
+<section class="panel" id="historyPanel">
+  <div class="panel-head"><h3>Chat History</h3><button class="header-btn" onclick="hidePanels()">Close</button></div>
+  <div id="historyList"></div>
+</section>
+<section class="panel" id="memoryPanel">
+  <div class="panel-head"><h3>Saved Memories</h3><button class="header-btn" onclick="hidePanels()">Close</button></div>
+  <p style="color:var(--muted);font-size:13px;line-height:1.6">এখানে নিজের গুরুত্বপূর্ণ তথ্য লিখে Save করো। Offline অবস্থাতেও ABHI AI এই তথ্য খুঁজে দিতে পারবে।</p>
+  <textarea id="memoryInput" placeholder="যেমন: আমার পছন্দের ভাষা বাংলা..."></textarea>
+  <button class="panel-btn" onclick="saveMemory()">Save Memory</button>
+  <div id="memoryList"></div>
+</section>
+<section class="panel" id="offlinePanel">
+  <div class="panel-head"><h3>Offline Mode</h3><button class="header-btn" onclick="hidePanels()">Close</button></div>
+  <div class="list-card"><b>Offline Memory Mode</b><br>Internet না থাকলেও Saved Memories ও এই ডিভাইসে থাকা Chat History দেখা এবং সেখান থেকে তথ্য খোঁজা যাবে।</div>
+  <div class="list-card"><b>True Offline AI</b><br>এই HTML ফাইলে Local AI Model যুক্ত নেই। Gemini Limit শেষ হলে নতুন উত্তর বানাতে ফোনে আলাদা Local Model ও Runtime ইনস্টল করতে হবে।</div>
+  <p id="networkInfo" style="color:var(--muted);font-size:13px;margin-top:8px"></p>
+  <button class="panel-btn secondary" onclick="hidePanels()">Back to Chat</button>
+</section>
+<section class="panel" id="settingsPanel">
+  <div class="panel-head"><h3>Settings</h3><button class="header-btn" onclick="hidePanels()">Close</button></div>
+  <label class="toggle" style="margin:12px 0"><input type="checkbox" id="rememberToggle" checked> Save chat history on this device</label>
+  <label class="toggle" style="margin:12px 0"><input type="checkbox" id="autoMemoryToggle"> Ask before saving suggested memories</label>
+  <div class="list-card">Personality: Empathy · Logic · Respect · Honest answers · Bengali / English / Banglish</div>
+  <button class="panel-btn" onclick="saveSettings()">Save Settings</button>
+</section>
 </div>
 
 <script>
-
-// YOUR CLOUDFLARE WORKER URL
-const API_URL =
-"https://my-ai-friend-api.echoversestudio0.workers.dev";
-
-// ELEMENTS
-const chat = document.getElementById("chat");
-const input = document.getElementById("message");
-const sendBtn = document.getElementById("send");
-const statusText = document.getElementById("status");
-
-// LOCAL MEMORY
-const STORAGE_KEY = "my_ai_friend_history_v1";
-
-let history = [];
-
-try {
-  const saved = JSON.parse(
-    localStorage.getItem(STORAGE_KEY) || "[]"
-  );
-
-  if (Array.isArray(saved)) {
-    history = saved.filter(m =>
-      (m.role === "user" || m.role === "model") &&
-      typeof m.text === "string"
-    ).slice(-40);
-  }
-} catch {
-  history = [];
-}
-
-function saveHistory() {
-  try {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(history.slice(-40))
-    );
-  } catch {
-    statusText.textContent = "Memory storage unavailable";
-  }
-}
-
-// ADD MESSAGE
-function addMessage(text, type, sources = []) {
-
-  document.getElementById("welcome")?.remove();
-
-  const div = document.createElement("div");
-  div.className = "message " + type;
-
-  if (type === "ai") {
-
-    const label = document.createElement("small");
-    label.className = "ai-label";
-    label.textContent = "✦ MY AI FRIEND";
-
-    div.appendChild(label);
-  }
-
-  const content = document.createElement("div");
-  content.textContent = text;
-  div.appendChild(content);
-
-  if (type === "ai") {
-
-    const actions = document.createElement("div");
-    actions.className = "message-actions";
-
-    const speakButton = document.createElement("button");
-    speakButton.textContent = "🔊 Listen";
-    speakButton.onclick = () => speak(text);
-
-    const copyButton = document.createElement("button");
-    copyButton.textContent = "Copy";
-    copyButton.onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(text);
-        copyButton.textContent = "Copied!";
-      } catch {
-        copyButton.textContent = "Copy failed";
-      }
-    };
-
-    actions.append(speakButton, copyButton);
-    div.appendChild(actions);
-  }
-
-  if (sources.length) {
-
-    const sourceBox = document.createElement("div");
-    sourceBox.className = "sources";
-
-    sources.forEach(source => {
-
-      const url = source.web?.uri;
-      const title = source.web?.title;
-
-      if (!url || !/^https?:\/\//i.test(url)) return;
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.textContent = "↗ " + (title || "Source");
-
-      sourceBox.appendChild(link);
-    });
-
-    div.appendChild(sourceBox);
-  }
-
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
-
-  return div;
-}
-
-// SUGGESTION
-function suggest(text) {
-  input.value = text;
-  sendMessage();
-}
-
-// CLEAR CHAT
-function clearChat() {
-
-  if (!confirm("তুমি কি পুরোনো কথোপকথন মুছে ফেলতে চাও?")) {
-    return;
-  }
-
-  history = [];
-  saveHistory();
-  stopVoice();
-
-  chat.innerHTML = `
-    <section class="welcome" id="welcome">
-      <div class="orb">✦</div>
-      <h1>Hey! I'm your AI Friend</h1>
-      <p>চলো, আবার নতুন করে কথা শুরু করি।</p>
-    </section>
-  `;
-
-  statusText.textContent = "New conversation started";
-}
-
-// SEND MESSAGE
-async function sendMessage() {
-
-  const text = input.value.trim();
-
-  if (!text || sendBtn.disabled) return;
-
-  stopVoice();
-
-  history.push({
-    role: "user",
-    text: text
-  });
-
-  addMessage(text, "user");
-
-  input.value = "";
-  sendBtn.disabled = true;
-
-  const typing = document.createElement("div");
-  typing.className = "typing";
-  typing.textContent = "✦ ভাবছি...";
-
-  chat.appendChild(typing);
-  chat.scrollTop = chat.scrollHeight;
-
-  statusText.textContent = "AI is thinking...";
-
-  try {
-
-    const response = await fetch(API_URL, {
-
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json"
-      },
-
-      body: JSON.stringify({
-
-        messages: history.slice(-20),
-
-        useSearch:
-          document.getElementById("search").checked
-
-      })
-
-    });
-
-    let data;
-
-    try {
-      data = await response.json();
-    } catch {
-      throw new Error("Server থেকে সঠিক উত্তর পাওয়া যায়নি।");
-    }
-
-    if (!response.ok) {
-      throw new Error(
-        data.error || "Gemini API Error: " + response.status
-      );
-    }
-
-    const answer = data.answer;
-
-    if (!answer) {
-      throw new Error("AI কোনো উত্তর দেয়নি।");
-    }
-
-    history.push({
-      role: "model",
-      text: answer
-    });
-
-    saveHistory();
-
-    typing.remove();
-
-    addMessage(
-      answer,
-      "ai",
-      Array.isArray(data.sources) ? data.sources : []
-    );
-
-    statusText.textContent = "● Connected to Gemini AI";
-
-    if (document.getElementById("autoVoice").checked) {
-      speak(answer);
-    }
-
-  } catch(error) {
-
-    typing.remove();
-
-    history.pop();
-
-    saveHistory();
-
-    addMessage(
-      "দুঃখিত! একটা সমস্যা হয়েছে।\n" + error.message,
-      "ai"
-    );
-
-    statusText.textContent = "Connection error";
-
-  } finally {
-
-    sendBtn.disabled = false;
-    input.focus();
-
-  }
-}
-
-// ENTER TO SEND
-input.addEventListener("keydown", function(e) {
-
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendMessage();
-  }
-
-});
-
-// VOICE INPUT
-let recognition = null;
-let isListening = false;
-
-function startVoice() {
-
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    alert("এই Browser Voice Input Support করছে না। Chrome ব্যবহার করো।");
-    return;
-  }
-
-  if (isListening) {
-    recognition?.stop();
-    return;
-  }
-
-  recognition = new SpeechRecognition();
-
-  recognition.lang = "bn-IN";
-  recognition.interimResults = false;
-  recognition.continuous = false;
-
-  recognition.onstart = () => {
-
-    isListening = true;
-    document.getElementById("mic").textContent = "🔴";
-    statusText.textContent = "শুনছি...";
-
-  };
-
-  recognition.onresult = (event) => {
-
-    const result = event.results[0][0].transcript;
-
-    input.value = result;
-    sendMessage();
-
-  };
-
-  recognition.onerror = (event) => {
-
-    statusText.textContent = "Voice error: " + event.error;
-
-  };
-
-  recognition.onend = () => {
-
-    isListening = false;
-    document.getElementById("mic").textContent = "🎙";
-
-    if (!sendBtn.disabled) {
-      statusText.textContent = "Powered by Gemini AI";
-    }
-
-  };
-
-  try {
-    recognition.start();
-  } catch(error) {
-    statusText.textContent = "Microphone could not start";
-  }
-
-}
-
-// VOICE OUTPUT
-function speak(text) {
-
-  if (!("speechSynthesis" in window)) {
-    alert("Voice output support পাওয়া যায়নি।");
-    return;
-  }
-
-  speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-
-  utterance.lang = "bn-IN";
-  utterance.rate = 1;
-  utterance.pitch = 1;
-
-  speechSynthesis.speak(utterance);
-
-}
-
-// STOP VOICE
-function stopVoice() {
-
-  if (recognition && isListening) {
-    recognition.stop();
-  }
-
-  if ("speechSynthesis" in window) {
-    speechSynthesis.cancel();
-  }
-
-}
-
-// RESTORE HISTORY
-function restoreHistory() {
-
-  if (history.length === 0) return;
-
-  document.getElementById("welcome")?.remove();
-
-  history.forEach(item => {
-
-    addMessage(
-      item.text,
-      item.role === "user" ? "user" : "ai"
-    );
-
-  });
-
-}
-
-restoreHistory();
-
-</script>
-
-</body>
-  </html>
-  
+"use strict";
+const API_URL="https://my-ai-friend-api.echoversestudio0.workers.dev";
+const KEYS={sessions:"abhi_ai_sessions_v1",active:"abhi_ai_active_v1",memories:"abhi_ai_memories_v1",settings:"abhi_ai_settings_v1"};
+const $=id=>document.getElementById(id);
+let sessions=read(KEYS.sessions,[]);
+let memories=read(KEYS.memories,[]);
+let settings=read(KEYS.settings,{saveHistory:true,askMemory:false});
+let activeId=localStorage.getItem(KEYS.active)||"";
+let history=[];
+let recognition=null,isListening=false;
+function read(k,fallback){try{const x=JSON.parse(localStorage.getItem(k));return x??fallback}catch{return fallback}}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function persist(){try{localStorage.setItem(KEYS.sessions,JSON.stringify(sessions.slice(-60)));localStorage.setItem(KEYS.memories,JSON.stringify(memories));}catch(e){$("status").textContent="Storage full or unavailable";}}
+function saveCurrent(){const s=sessions.find(x=>x.id===activeId);if(!s)return;s.messages=history.slice(-100);s.updated=Date.now();persist()}
+function makeSession(){const s={id:uid(),title:"New conversation",messages:[],updated:Date.now()};sessions.unshift(s);activeId=s.id;history=[];localStorage.setItem(KEYS.active,activeId);persist();renderChat();return s}
+function ensureSession(){let s=sessions.find(x=>x.id===activeId);if(!s)s=makeSession();return s}
+function newChat(){stopVoice();makeSession();$("status").textContent="New conversation started"}
+function renderChat(){const s=ensureSession();$("chat").innerHTML="";if(!history.length){$("chat").innerHTML='<section class="welcome" id="welcome"><div class="orb">A</div><h1>Hey! I’m ABHI AI</h1><p>তোমার কথা শুনতে, বুঝতে এবং সাহায্য করতে আমি এখানে আছি।</p><div class="suggestions"><button onclick="suggest(\\'হ্যালো ABHI AI!\\')">হ্যালো!</button><button onclick="suggest(\\'আজ আমার মন ভালো নেই।\\')">মন খারাপ</button></div></section>';return;}history.forEach(m=>addMessage(m.text,m.role==="user"?"user":"ai",false));}
+function addMessage(text,type,scroll=true){$("welcome")?.remove();const div=document.createElement("div");div.className="message "+type;if(type==="ai"){const l=document.createElement("small");l.className="ai-label";l.textContent="✦ ABHI AI";div.appendChild(l)}const c=document.createElement("div");c.textContent=text;div.appendChild(c);if(type==="ai"){const a=document.createElement("div");a.className="message-actions";const listen=document.createElement("button");listen.textContent="🔊 Listen";listen.onclick=()=>speak(text);const copy=document.createElement("button");copy.textContent="Copy";copy.onclick=async()=>{try{await navigator.clipboard.writeText(text);copy.textContent="Copied"}catch{copy.textContent="Copy failed"}};a.append(listen,copy);div.appendChild(a)}$("chat").appendChild(div);if(scroll)$("chat").scrollTop=$("chat").scrollHeight;return div}
+function suggest(t){$("message").value=t;sendMessage()}
+function openMenu(){$("drawer").classList.add("open");$("scrim").classList.add("open")}
+function closeMenu(){$("drawer").classList.remove("open");$("scrim").classList.remove("open")}
+function showPanel(id){document.querySelectorAll(".panel").forEach(p=>p.classList.remove("open"));$(id).classList.add("open");if(id==="historyPanel")renderHistory();if(id==="memoryPanel")renderMemories();if(id==="offlinePanel")$("networkInfo").textContent=navigator.onLine?"Internet connection detected.":"You are offline."}
+function hidePanels(){document.querySelectorAll(".panel").forEach(p=>p.classList.remove("open"))}
+function renderHistory(){$("historyList").innerHTML="";sessions.slice().sort((a,b)=>b.updated-a.updated).forEach(s=>{const d=document.createElement("div");d.className="list-card";const b=document.createElement("button");b.textContent="Open";b.onclick=()=>{activeId=s.id;localStorage.setItem(KEYS.active,activeId);history=s.messages||[];hidePanels();renderChat()};d.textContent=(s.title||"Chat")+" · "+new Date(s.updated).toLocaleString();d.appendChild(b);$("historyList").appendChild(d)})}
+function saveMemory(){const t=$("memoryInput").value.trim();if(!t)return alert("Memory লিখে Save করো।");memories.unshift({id:uid(),text:t,created:Date.now()});$("memoryInput").value="";persist();renderMemories()}
+function renderMemories(){$("memoryList").innerHTML="";memories.forEach(m=>{const d=document.createElement("div");d.className="list-card";const b=document.createElement("button");b.textContent="Delete";b.onclick=()=>{if(confirm("এই Memory মুছবে?")){memories=memories.filter(x=>x.id!==m.id);persist();renderMemories()}};d.textContent=m.text;d.appendChild(b);$("memoryList").appendChild(d)})}
+function saveSettings(){settings.saveHistory=$("rememberToggle").checked;settings.askMemory=$("autoMemoryToggle").checked;localStorage.setItem(KEYS.settings,JSON.stringify(settings));alert("Settings saved")}
+function exportData(){const blob=new Blob([JSON.stringify({sessions,memories,settings},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="abhi-ai-backup.json";a.click();URL.revokeObjectURL(a.href)}
+function clearAllData(){if(!confirm("সব Chat History ও Saved Memories স্থায়ীভাবে মুছবে?"))return;localStorage.removeItem(KEYS.sessions);localStorage.removeItem(KEYS.memories);localStorage.removeItem(KEYS.active);sessions=[];memories=[];makeSession();renderChat()}
+function offlineMemoryAnswer(q){const terms=q.toLowerCase().split(/[^a-z0-9অ-৯]+/).filter(x=>x.length>2);const hits=memories.filter(m=>terms.some(t=>m.text.toLowerCase().includes(t)));if(hits.length)return "তোমার Saved Memories-এ এই সম্পর্কিত তথ্য পেয়েছি:\\n"+hits.map(m=>"• "+m.text).join("\\n");const recent=sessions.flatMap(s=>s.messages||[]).filter(m=>m.role==="model"||m.role==="user").slice(-8);const found=recent.filter(m=>terms.some(t=>m.text.toLowerCase().includes(t)));if(found.length)return "আগের কথোপকথনে এই সম্পর্কিত অংশ পেয়েছি:\\n"+found.slice(-4).map(m=>(m.role==="user"?"তুমি: ":"ABHI AI: ")+m.text).join("\\n\\n");return "আমি এখন Offline Memory Mode-এ আছি। তোমার Saved Memories ও সংরক্ষিত কথোপকথন খুঁজে দেখেছি, কিন্তু এই প্রশ্নের সঙ্গে মেলে এমন তথ্য পাইনি। নতুন উত্তর তৈরি করতে Internet বা Local AI Model প্রয়োজন।"}
+function isQuotaOrNetwork(msg,status){return !navigator.onLine||status===429||status===503||/quota|limit|high demand|failed to fetch|network|connect/i.test(msg||"")}
+async function sendMessage(){const text=$("message").value.trim();if(!text||$("send").disabled)return;stopVoice();const s=ensureSession();if(!history.length)s.title=text.slice(0,42);history.push({role:"user",text,at:Date.now()});addMessage(text,"user");$("message").value="";$("send").disabled=true;const typing=document.createElement("div");typing.className="typing";typing.textContent="✦ ভাবছি...";$("chat").appendChild(typing);$("chat").scrollTop=$("chat").scrollHeight;$("status").textContent="ABHI AI is thinking...";let answer="",offline=false;
+try{if(!navigator.onLine)throw new Error("Offline");const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:history.slice(-20),useSearch:$("search").checked,memories:memories.slice(0,30).map(m=>m.text)})});let data={};try{data=await res.json()}catch{}if(!res.ok)throw Object.assign(new Error(data.error||"Server error"),{status:res.status});answer=data.answer;if(!answer)throw new Error("AI উত্তর দেয়নি।");$("status").textContent="● Connected to Gemini AI"}catch(e){if(isQuotaOrNetwork(e.message,e.status)){offline=true;answer=offlineMemoryAnswer(text);$("status").textContent="● Offline Memory Mode — Local data only"}else{answer="দুঃখিত, এখন Gemini সংযোগে সমস্যা হচ্ছে। "+e.message;$("status").textContent="Connection error"}}
+typing.remove();history.push({role:"model",text:answer,at:Date.now(),offline});saveCurrent();addMessage(answer,"ai");if($("autoVoice").checked)speak(answer)
+$("send").disabled=false;$("message").focus()}
+$("message").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();sendMessage()}});
+function startVoice(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return alert("এই Browser Voice Input Support করে না। Chrome ব্যবহার করো।");if(isListening){recognition?.stop();return}recognition=new SR();recognition.lang="bn-IN";recognition.interimResults=false;recognition.onstart=()=>{isListening=true;$("mic").textContent="🔴"};recognition.onresult=e=>{$("message").value=e.results[0][0].transcript;sendMessage()};recognition.onerror=e=>$("status").textContent="Voice error: "+e.error;recognition.onend=()=>{isListening=false;$("mic").textContent="🎙"};recognition.start()}
+function speak(t){if(!("speechSynthesis"in window))return alert("Voice output পাওয়া যায়নি");speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="bn-IN";speechSynthesis.speak(u)}
+function stopVoice(){recognition?.stop();if("speechSynthesis"in window)speechSynthesis.cancel()}
+window.addEventListener("online",()=>{$("status").textContent="Internet restored — Gemini available";$("modePill").textContent="ONLINE"});
+window.addEventListener("offline",()=>{$("status").textContent="Offline — Memory mode available";$("modePill").textContent="OFFLINE"});
+function init(){if(!sessions.length){makeSession()}else{let s=sessions.find(x=>x.id===activeId)||sessions[0];activeId=s.id;histor
