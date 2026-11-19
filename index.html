@@ -197,3 +197,8 @@ function stopVoice(){recognition?.stop();if("speechSynthesis"in window)speechSyn
 window.addEventListener("online",()=>{$("status").textContent="Internet restored — Gemini available";$("modePill").textContent="ONLINE"});
 window.addEventListener("offline",()=>{$("status").textContent="Offline — Memory mode available";$("modePill").textContent="OFFLINE"});
 function init(){if(!sessions.length){makeSession()}else{let s=sessions.find(x=>x.id===activeId)||sessions[0];activeId=s.id;histor
+
+init();
+</script>
+</body>
+</html>                
